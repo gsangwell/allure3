@@ -1,7 +1,7 @@
 import { epic, feature, label, story } from "allure-js-commons";
 import { beforeEach, describe, expect, it } from "vitest";
 
-import { relativeUrl, sanitizeExternalUrl } from "../../src/utils/url.js";
+import { relativeReportUrl, relativeUrl, sanitizeExternalUrl } from "../../src/utils/url.js";
 
 beforeEach(async () => {
   await epic("coverage");
@@ -44,5 +44,23 @@ describe("relativeUrl", () => {
     const reportUrl = "https://reports.example/current/index.html";
 
     expect(relativeUrl(historyUrl, reportUrl)).toBe(historyUrl);
+  });
+});
+
+describe("relativeReportUrl", () => {
+  it("preserves a reverse-proxy deployment path for service-root history URLs", () => {
+    const currentUrl = "https://reports.example/health-reports/current-report/awesome/index.html";
+    const historyUrl = "https://reports.example/previous-report/awesome/index.html#test-1";
+
+    expect(relativeReportUrl(historyUrl, currentUrl, "current-report")).toBe(
+      "../../previous-report/awesome/index.html#test-1",
+    );
+  });
+
+  it("does not rewrite cross-origin history URLs", () => {
+    const currentUrl = "https://reports.example/health-reports/current-report/awesome/index.html";
+    const historyUrl = "https://other.example/previous-report/awesome/index.html";
+
+    expect(relativeReportUrl(historyUrl, currentUrl, "current-report")).toBe(historyUrl);
   });
 });

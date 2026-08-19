@@ -29,6 +29,35 @@ export const relativeUrl = (targetUrl: string, currentUrl: string): string => {
 };
 
 /**
+ * Produces a relative URL to another report while preserving the deployment
+ * path before the current report UUID. History URLs are commonly stored from
+ * the service root (for example, `/previous-report`), whereas the browser may
+ * display reports below a reverse-proxy path such as `/health-reports`.
+ */
+export const relativeReportUrl = (
+  targetUrl: string,
+  currentUrl: string,
+  currentReportUuid: string,
+): string => {
+  const target = new URL(targetUrl, currentUrl);
+  const current = new URL(currentUrl);
+
+  if (target.origin === current.origin) {
+    const currentReportPath = `/${currentReportUuid}/`;
+    const reportPathIndex = current.pathname.indexOf(currentReportPath);
+    if (reportPathIndex !== -1) {
+      const deploymentPath = current.pathname.slice(0, reportPathIndex);
+
+      if (!target.pathname.startsWith(`${deploymentPath}/`)) {
+        target.pathname = `${deploymentPath}/${target.pathname.replace(/^\/+/, "")}`;
+      }
+    }
+  }
+
+  return relativeUrl(target.toString(), currentUrl);
+};
+
+/**
  * Returns a normalized URL string only for explicitly allowed external schemes.
  * Unsafe or malformed values return undefined.
  */

@@ -1,4 +1,4 @@
-import { type HistoryTestResult, capitalize, relativeUrl } from "@allurereport/core-api";
+import { type HistoryTestResult, capitalize, relativeReportUrl } from "@allurereport/core-api";
 import { getReportOptions } from "@allurereport/web-commons";
 import { SvgIcon, Text, TooltipWrapper, allureIcons } from "@allurereport/web-components";
 import type { FunctionalComponent } from "preact";
@@ -26,7 +26,10 @@ const TrPrevStatus: FunctionalComponent<{ item: HistoryTestResult }> = ({ item }
   navigateUrl.hash = item.id;
 
   return (
-    <a className={styles["test-result-prev-status"]} href={relativeUrl(navigateUrl.toString(), window.location.href)}>
+    <a
+      className={styles["test-result-prev-status"]}
+      href={relativeReportUrl(navigateUrl.toString(), window.location.href, reportOptions.reportUuid)}
+    >
       <SvgIcon id={allureIcons.lineShapesDotCircle} className={styles[`status-${item?.status}`]} />
     </a>
   );

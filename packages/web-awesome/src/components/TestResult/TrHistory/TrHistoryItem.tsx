@@ -1,4 +1,4 @@
-import { type HistoryTestResult, formatDuration, relativeUrl } from "@allurereport/core-api";
+import { type HistoryTestResult, formatDuration, relativeReportUrl } from "@allurereport/core-api";
 import { getReportOptions } from "@allurereport/web-commons";
 import { ArrowButton, IconButton, Text, TooltipWrapper, TreeItemIcon, allureIcons } from "@allurereport/web-components";
 import { type FunctionalComponent } from "preact";
@@ -60,8 +60,8 @@ export const TrHistoryItem: FunctionalComponent<Props> = (props) => {
 
     navUrl.hash = id;
 
-    return relativeUrl(navUrl.toString(), window.location.href);
-  }, [id, url]);
+    return relativeReportUrl(navUrl.toString(), window.location.href, reportOptions.reportUuid);
+  }, [id, reportOptions.reportUuid, url]);
 
   const renderExternalLink = () => {
     if (!navigateUrl) {
