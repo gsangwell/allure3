@@ -83,7 +83,16 @@ button.test-result-attachment-content {
 .test-result-header-text {
   padding-left: 4px;
   word-break: break-word;
+  min-width: 0;
+}
+
+.test-result-step-title {
+  display: flex;
+  align-items: center;
+  flex: 0 1 auto;
+  gap: 6px;
   margin-right: auto;
+  min-width: 0;
 }
 
 .test-result-step-button {

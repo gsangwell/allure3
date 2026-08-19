@@ -1,4 +1,4 @@
-import type { TestError, TestStatus } from "@allurereport/core-api";
+import { capitalize, type TestError, type TestStatus } from "@allurereport/core-api";
 import { ansiSemanticColors, ansiToHTML, normalizeAnsiForegroundColors } from "@allurereport/web-commons";
 import { Button, Code, IconButton, Text, TooltipWrapper, allureIcons } from "@allurereport/web-components";
 import clsx from "clsx";
@@ -38,6 +38,7 @@ export const TrError: FunctionalComponent<
 > = ({ className, message = "", trace, actual, expected, status, showMessage = true, ...rest }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useI18n("ui");
+  const { t: statusText } = useI18n("statuses");
   const { t: tooltip } = useI18n("controls");
   const { t: empty } = useI18n("empty");
   const hasTrace = Boolean(trace?.length);
@@ -49,6 +50,7 @@ export const TrError: FunctionalComponent<
       component: <TrDiff actual={actual} expected={expected} />,
     });
   const sanitizedMessage = showMessage && message ? ansiStatusDetailsToHTML(message) : "";
+  const heading = status ? capitalize(statusText(status)) : t("error");
 
   return (
     <div
@@ -65,7 +67,7 @@ export const TrError: FunctionalComponent<
               bold
               className={clsx(styles["test-result-error-text"], styles[`tr-color-${status}`])}
             >
-              {t("error")}
+              {heading}
             </Text>
             <TooltipWrapper tooltipText={tooltip("clipboard")} tooltipTextAfterClick={tooltip("clipboardSuccess")}>
               <IconButton

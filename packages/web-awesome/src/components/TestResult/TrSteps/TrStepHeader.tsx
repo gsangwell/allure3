@@ -1,12 +1,27 @@
 import type { TestStatus } from "@allurereport/core-api";
-import { ArrowButton, Code, LinkifiedText, TreeItemIcon, allureIcons } from "@allurereport/web-components";
+import { ArrowButton, Code, LinkifiedText, Tag, TreeItemIcon, allureIcons } from "@allurereport/web-components";
 import clsx from "clsx";
 import type { FunctionComponent } from "preact";
 
 import * as styles from "@/components/TestResult/TrSteps/styles.scss";
 
+const severityTagSkin = {
+  blocker: "failed",
+  critical: "warning",
+  error: "failed",
+  failed: "failed",
+  info: "neutral",
+  minor: "neutral",
+  normal: "secondary",
+  passed: "successful",
+  success: "successful",
+  trivial: "successful",
+  warning: "warning",
+} as const;
+
 export type TrStepHeaderProps = {
   title: string;
+  severity?: string;
   status: TestStatus;
   stepIndex?: number;
   isOpened: boolean;
@@ -19,6 +34,7 @@ export type TrStepHeaderProps = {
 
 export const TrStepHeader: FunctionComponent<TrStepHeaderProps> = ({
   title,
+  severity,
   status,
   stepIndex,
   isOpened,
@@ -49,7 +65,17 @@ export const TrStepHeader: FunctionComponent<TrStepHeaderProps> = ({
     <Code size="s" className={styles["test-result-step-number"]}>
       {stepIndex}
     </Code>
-    <LinkifiedText data-testid="test-result-step-title" className={styles["test-result-header-text"]} text={title} />
+    <div className={styles["test-result-step-title"]}>
+      <LinkifiedText data-testid="test-result-step-title" className={styles["test-result-header-text"]} text={title} />
+      {severity && (
+        <Tag
+          data-testid="test-result-step-severity"
+          skin={severityTagSkin[severity.toLowerCase() as keyof typeof severityTagSkin]}
+        >
+          {severity}
+        </Tag>
+      )}
+    </div>
     {subtreeToggle}
     {extra}
   </div>

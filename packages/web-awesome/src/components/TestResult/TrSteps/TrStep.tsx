@@ -35,12 +35,22 @@ const iconBySubtreeState = {
   "double-up": allureIcons.lineArrowsChevronUpDouble,
 } as const;
 
+const isSeverityParameter = (parameter: { name: string }) => parameter.name.toLowerCase() === "severity";
+
+const getStepSeverity = (parameters: TrStepItem["item"]["parameters"]) =>
+  parameters.find(isSeverityParameter)?.value;
+
 export const TrStepParameters = (props: { parameters: TrStepItem["item"]["parameters"] }) => {
   const { parameters } = props;
+  const visibleParameters = parameters.filter((parameter) => !isSeverityParameter(parameter));
+
+  if (visibleParameters.length === 0) {
+    return null;
+  }
 
   return (
     <div className={styles["test-result-parameters"]}>
-      <MetadataList size={"s"} envInfo={parameters as unknown as MetadataItem[]} columns={1} />
+      <MetadataList size={"s"} envInfo={visibleParameters as unknown as MetadataItem[]} columns={1} />
     </div>
   );
 };
@@ -74,6 +84,7 @@ export const TrStep: FunctionComponent<{
   isTopLevel?: boolean;
 }> = ({ item, stepIndex, isTopLevel }) => {
   const { item: stepData, bodyItems, suppressInlineError } = item;
+  const severity = getStepSeverity(stepData.parameters);
   const inlineError = {
     message: stepData.message ?? stepData.error?.message,
     trace: stepData.trace ?? stepData.error?.trace,
@@ -153,6 +164,7 @@ export const TrStep: FunctionComponent<{
         className={trOverviewHeaderFocusClass(stepData.stepId)}
         {...trOverviewFocusAttrs(stepData.stepId)}
         title={stepData.name}
+        severity={severity}
         status={stepData.status}
         stepIndex={stepIndex}
         isOpened={isOpened}
