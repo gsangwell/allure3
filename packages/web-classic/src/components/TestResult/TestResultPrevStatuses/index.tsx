@@ -11,7 +11,11 @@ import * as styles from "./styles.scss";
 
 const TestResultPrevStatus: FunctionalComponent<{ item: HistoryTestResult }> = ({ item }) => {
   const { reportUuid } = getReportOptions<ClassicReportOptions>();
-  const navigateUrl = relativeReportUrl(new URL(item.id, item.url).toString(), window.location.href, reportUuid);
+  const navigateUrl = relativeReportUrl(
+    new URL(`${item.id}/index.html`, item.url).toString(),
+    window.location.href,
+    reportUuid,
+  );
 
   return (
     <a className={styles["test-result-prev-status"]} href={navigateUrl} target={"_blank"} rel={"noreferrer"}>

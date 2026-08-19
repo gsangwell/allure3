@@ -21,7 +21,7 @@ const TrPrevStatus: FunctionalComponent<{ item: HistoryTestResult }> = ({ item }
   }
 
   const { origin, pathname } = new URL(item.url);
-  const navigateUrl = new URL([pathname, reportOptions.id].join("/"), origin);
+  const navigateUrl = new URL([pathname, reportOptions.id, "index.html"].join("/"), origin);
 
   navigateUrl.hash = item.id;
 

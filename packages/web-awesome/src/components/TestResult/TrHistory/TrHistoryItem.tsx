@@ -56,7 +56,7 @@ export const TrHistoryItem: FunctionalComponent<Props> = (props) => {
     }
 
     const { origin, pathname } = new URL(url);
-    const navUrl = new URL([pathname, reportOptions.id].join("/"), origin);
+    const navUrl = new URL([pathname, reportOptions.id, "index.html"].join("/"), origin);
 
     navUrl.hash = id;
 
