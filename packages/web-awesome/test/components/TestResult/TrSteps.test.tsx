@@ -94,6 +94,8 @@ const passedStepWithStatusDetails = {
     parameters: [],
     message: "The check passed.",
     trace: "trace",
+    start: 1735689600000,
+    stop: 1735689600000,
     hasSimilarErrorInSubSteps: false,
   },
   suppressInlineError: false,
@@ -152,5 +154,6 @@ describe("components > TestResult > TrSteps", () => {
     const view = render(<TrStep item={passedStepWithStatusDetails} stepIndex={1} isTopLevel={true} />);
 
     expect(view.getByTestId("test-result-error-header")).toHaveTextContent("Passed");
+    expect(view.getByText(/^Ran at /)).toBeInTheDocument();
   });
 });

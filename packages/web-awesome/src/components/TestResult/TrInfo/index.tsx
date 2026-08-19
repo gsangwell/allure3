@@ -1,6 +1,5 @@
-import { type TestEnvGroup, getRealEnvsCount } from "@allurereport/core-api";
-import { formatDuration } from "@allurereport/core-api";
-import { Counter, Heading, Loadable, Text, TooltipWrapper } from "@allurereport/web-components";
+import { type TestEnvGroup, formatDuration, getRealEnvsCount } from "@allurereport/core-api";
+import { Counter, Heading, Loadable, Text } from "@allurereport/web-components";
 import clsx from "clsx";
 import type { FunctionalComponent } from "preact";
 import type { AwesomeTestResult } from "types";
@@ -23,13 +22,14 @@ export type TrInfoProps = {
 };
 
 export const TrInfo: FunctionalComponent<TrInfoProps> = ({ testResult }) => {
-  const { name, status, muted, flaky, known, duration, labels, history, retries, attachments, stop, categories } =
+  const { name, status, muted, flaky, known, duration, labels, history, retries, attachments, start, stop, categories } =
     testResult ?? {};
+  const { t } = useI18n("ui");
   const formattedDuration = formatDuration(duration as number);
-  const fullDate = stop && timestampToDate(stop);
+  const ranAt = stop ?? start;
+  const runTime = typeof ranAt === "number" ? `${t("ranAt")} ${timestampToDate(ranAt)}` : formattedDuration;
   const severity = labels?.find((label) => label.name === "severity")?.value ?? "normal";
   const categoryName = categories?.[0]?.name;
-  const { t } = useI18n("ui");
   const statuses = Object.entries({ flaky, muted, known }).filter(([, value]) => value);
 
   const Content = () => {
@@ -50,11 +50,9 @@ export const TrInfo: FunctionalComponent<TrInfoProps> = ({ testResult }) => {
               {t("category")}: {categoryName}
             </Text>
           )}
-          <TooltipWrapper tooltipText={fullDate}>
-            <Text tag={"div"} size={"s"} bold className={styles["test-result-duration"]}>
-              {formattedDuration}
-            </Text>
-          </TooltipWrapper>
+          <Text tag={"div"} size={"s"} bold className={styles["test-result-duration"]}>
+            {runTime}
+          </Text>
         </div>
         <div className={styles["test-result-tabs"]}>
           <TrTabsList>

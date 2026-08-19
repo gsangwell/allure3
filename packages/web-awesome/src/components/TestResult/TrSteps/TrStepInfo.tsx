@@ -7,6 +7,9 @@ import {
 import { SvgIcon, Text, allureIcons } from "@allurereport/web-components";
 import clsx from "clsx";
 
+import { useI18n } from "@/stores/locale";
+import { timestampToDate } from "@/utils/time";
+
 import * as styles from "@/components/TestResult/TrSteps/styles.scss";
 
 const countErrorStatuses = (step: TestStepResult): Record<string, number> => {
@@ -48,6 +51,9 @@ const icons = {
 export const TrStepInfo = (props: { item: DefaultTestStepResult }) => {
   const { item } = props;
   const formattedDuration = formatDuration(item?.duration as number);
+  const { t } = useI18n("ui");
+  const ranAt = item.stop ?? item.start;
+  const runTime = typeof ranAt === "number" ? `${t("ranAt")} ${timestampToDate(ranAt)}` : formattedDuration;
   const stepLength = item.steps?.length;
   const attachmentLength = item.steps?.filter((step) => step.type === "attachment")?.length;
 
@@ -84,7 +90,7 @@ export const TrStepInfo = (props: { item: DefaultTestStepResult }) => {
         </div>
       )}
       <Text type="ui" size={"s"} className={styles["item-time"]}>
-        {formattedDuration}
+        {runTime}
       </Text>
     </div>
   );

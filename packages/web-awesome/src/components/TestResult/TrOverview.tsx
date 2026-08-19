@@ -6,7 +6,6 @@ import TestStepsEmpty from "@/components/TestResult/TestStepsEmpty";
 import { TrDescription } from "@/components/TestResult/TrDescription";
 import { TrError } from "@/components/TestResult/TrError";
 import { TrLinks } from "@/components/TestResult/TrLinks";
-import { TrMetadata } from "@/components/TestResult/TrMetadata";
 import { TrParameters } from "@/components/TestResult/TrParameters";
 import { TrPwTraces } from "@/components/TestResult/TrPwTraces";
 import { TrSetup } from "@/components/TestResult/TrSetup";
@@ -24,7 +23,7 @@ export type TrOverviewProps = {
 
 export const TrOverview: FunctionalComponent<TrOverviewProps> = ({ testResult }) => {
   useTestResultOverviewFocusScroll();
-  const { parameters, groupedLabels, links, descriptionHtml, setup, teardown, id, error, status } = testResult || {};
+  const { parameters, links, descriptionHtml, setup, teardown, id, error, status } = testResult || {};
   const testResultId = id ?? currentTrId.value;
   const { t } = useI18n("ui");
   const bodyItems = getBodyItems(testResult, t("error"));
@@ -43,9 +42,6 @@ export const TrOverview: FunctionalComponent<TrOverviewProps> = ({ testResult })
       )}
       {Boolean(pwTraces?.length) && <TrPwTraces pwTraces={pwTraces} />}
       {Boolean(parameters?.length) && <TrParameters id={testResultId} parameters={parameters} />}
-      {Boolean(groupedLabels && Object.keys(groupedLabels || {})?.length) && (
-        <TrMetadata id={testResultId} testResult={testResult} />
-      )}
       {Boolean(links?.length) && <TrLinks id={testResultId} links={links} />}
       {Boolean(descriptionHtml) && <TrDescription id={testResultId} descriptionHtml={descriptionHtml} />}
       <div className={styles["test-results"]}>

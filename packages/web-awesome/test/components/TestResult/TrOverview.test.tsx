@@ -32,10 +32,6 @@ vi.mock("@/components/TestResult/TrLinks", () => ({
   TrLinks: () => null as any,
 }));
 
-vi.mock("@/components/TestResult/TrMetadata", () => ({
-  TrMetadata: () => null as any,
-}));
-
 vi.mock("@/components/TestResult/TrParameters", () => ({
   TrParameters: () => null as any,
 }));
@@ -109,6 +105,20 @@ describe("components > TestResult > TrOverview", () => {
 
     expect(screen.getByTestId("tr-steps")).toBeInTheDocument();
     expect(screen.queryByTestId("test-steps-empty")).not.toBeInTheDocument();
+  });
+
+  it("does not render the labels section", () => {
+    render(
+      <TrOverview
+        testResult={makeTestResult({
+          labels: [{ name: "severity", value: "warning" }],
+          groupedLabels: { severity: ["warning"] },
+        })}
+      />,
+    );
+
+    expect(screen.queryByText("labels")).not.toBeInTheDocument();
+    expect(screen.queryByText("warning")).not.toBeInTheDocument();
   });
 
   it("should render TrSteps when the test has steps and an error", () => {

@@ -122,7 +122,7 @@
   },
   "execution": {
     "name": "Execution",
-    "body": "Test body",
+    "body": "Checks",
     "setup": "Set up",
     "teardown": "Tear down"
   },
@@ -151,6 +151,7 @@
     "copy-email": "Copy email",
     "attempt": "Attempt {{attempt}} of {{total}}",
     "retry": "Retry {{attempt}} of {{total}}",
+    "ranAt": "Ran at",
     "at": "at",
     "generated": "Generated",
     "variables": "Variables",
