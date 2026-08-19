@@ -57,10 +57,10 @@ describe("relativeReportUrl", () => {
     );
   });
 
-  it("does not rewrite cross-origin history URLs", () => {
+  it("uses the proxy origin and path for history URLs from another origin", () => {
     const currentUrl = "https://reports.example/health-reports/current-report/awesome/index.html";
     const historyUrl = "https://other.example/previous-report/awesome/index.html";
 
-    expect(relativeReportUrl(historyUrl, currentUrl, "current-report")).toBe(historyUrl);
+    expect(relativeReportUrl(historyUrl, currentUrl, "current-report")).toBe("../../previous-report/awesome/index.html");
   });
 });

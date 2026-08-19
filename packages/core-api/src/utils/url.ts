@@ -30,27 +30,27 @@ export const relativeUrl = (targetUrl: string, currentUrl: string): string => {
 
 /**
  * Produces a relative URL to another report while preserving the deployment
- * path before the current report UUID. History URLs are commonly stored from
- * the service root (for example, `/previous-report`), whereas the browser may
- * display reports below a reverse-proxy path such as `/health-reports`.
+ * path before the current report UUID. History URLs are commonly stored with
+ * the report service's origin and root path (for example,
+ * `http://service/previous-report`), whereas the browser may display reports
+ * below a reverse-proxy path such as `/health-reports`.
  */
 export const relativeReportUrl = (
   targetUrl: string,
   currentUrl: string,
   currentReportUuid: string,
 ): string => {
-  const target = new URL(targetUrl, currentUrl);
   const current = new URL(currentUrl);
+  const source = new URL(targetUrl, currentUrl);
+  const target = new URL(`${source.pathname}${source.search}${source.hash}`, current);
 
-  if (target.origin === current.origin) {
-    const currentReportPath = `/${currentReportUuid}/`;
-    const reportPathIndex = current.pathname.indexOf(currentReportPath);
-    if (reportPathIndex !== -1) {
-      const deploymentPath = current.pathname.slice(0, reportPathIndex);
+  const currentReportPath = `/${currentReportUuid}/`;
+  const reportPathIndex = current.pathname.indexOf(currentReportPath);
+  if (reportPathIndex !== -1) {
+    const deploymentPath = current.pathname.slice(0, reportPathIndex);
 
-      if (!target.pathname.startsWith(`${deploymentPath}/`)) {
-        target.pathname = `${deploymentPath}/${target.pathname.replace(/^\/+/, "")}`;
-      }
+    if (!target.pathname.startsWith(`${deploymentPath}/`)) {
+      target.pathname = `${deploymentPath}/${target.pathname.replace(/^\/+/, "")}`;
     }
   }
 
