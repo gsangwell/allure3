@@ -1,7 +1,7 @@
 import { epic, feature, label, story } from "allure-js-commons";
 import { beforeEach, describe, expect, it } from "vitest";
 
-import { sanitizeExternalUrl } from "../../src/utils/url.js";
+import { relativeUrl, sanitizeExternalUrl } from "../../src/utils/url.js";
 
 beforeEach(async () => {
   await epic("coverage");
@@ -26,5 +26,23 @@ describe("sanitizeExternalUrl", () => {
     expect(sanitizeExternalUrl("")).toBeUndefined();
     expect(sanitizeExternalUrl("   ")).toBeUndefined();
     expect(sanitizeExternalUrl(undefined)).toBeUndefined();
+  });
+});
+
+describe("relativeUrl", () => {
+  it("uses a relative path for same-origin report links", () => {
+    const historyUrl = "https://reports.example/history/previous/index.html#test-1";
+    const reportUrl = "https://reports.example/current/index.html";
+
+    expect(relativeUrl(historyUrl, reportUrl)).toBe(
+      "../history/previous/index.html#test-1",
+    );
+  });
+
+  it("preserves a cross-origin target as an absolute URL", () => {
+    const historyUrl = "https://other.example/history/index.html";
+    const reportUrl = "https://reports.example/current/index.html";
+
+    expect(relativeUrl(historyUrl, reportUrl)).toBe(historyUrl);
   });
 });
