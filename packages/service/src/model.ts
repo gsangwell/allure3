@@ -21,6 +21,7 @@ export type UploadReportConfig = Required<
 
 export type AllureServiceApiClientConfig = UploadReportConfig & {
   accessToken: string;
+  url?: string;
   private?: boolean;
 };
 

@@ -376,6 +376,7 @@ export const resolveConfig = async (config: Config, override: ConfigOverride = {
     allureService: config.allureService
       ? {
           accessToken: config.allureService.accessToken,
+	  url: config.allureService.url,
           private: config.allureService.private,
           uploadConcurrency: parseIntegerConfigValue(
             config.allureService.uploadConcurrency,

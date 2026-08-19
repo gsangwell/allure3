@@ -39,7 +39,8 @@ export class AllureServiceClient implements AllureServiceApiClient {
     const { url } = parseServiceToken(config.accessToken);
 
     this.#url = url.replace(/\/$/, "");
-    this.#client = createServiceHttpClient(this.#url, {
+    const serviceUrl = config.url?.replace(/\/$/, "") || this.#url;
+    this.#client = createServiceHttpClient(serviceUrl, {
       accessToken: config.accessToken,
     });
   }
@@ -76,7 +77,7 @@ export class AllureServiceClient implements AllureServiceApiClient {
       },
     });
 
-    return new URL(url, this.#url);
+    return new URL(url.replace(/^\/+/, ""), `${this.#url}/`);
   }
 
   /**

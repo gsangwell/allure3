@@ -4,6 +4,7 @@ export type KnownIssuesPathConfig = string;
 
 export type AllureServiceConfig = {
   accessToken?: string;
+  url?: string;
   private?: boolean;
   uploadConcurrency?: number;
   uploadMaxAttempts?: number;
