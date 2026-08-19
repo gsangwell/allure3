@@ -15,7 +15,14 @@ export const createFaviconLinkTag = (src: string) => {
 };
 
 export const createBaseUrlScript = () => {
-  return '<base href="./">';
+  return `
+    <script>
+      const baseEl = document.createElement("base");
+      baseEl.href = "./";
+
+      window.document.head.appendChild(baseEl);
+    </script>
+  `;
 };
 
 /**

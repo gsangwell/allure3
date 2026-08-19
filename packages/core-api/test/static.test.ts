@@ -1,7 +1,7 @@
 import { epic, feature, label, story } from "allure-js-commons";
 import { beforeEach, describe, expect, it } from "vitest";
 
-import { createReportDataScript, stringifyForInlineScript } from "../src/static.js";
+import { createBaseUrlScript, createReportDataScript, stringifyForInlineScript } from "../src/static.js";
 
 beforeEach(async () => {
   await epic("coverage");
@@ -32,6 +32,15 @@ describe("createReportDataScript", () => {
 
     expect(script).toContain('d("widgets/default/nav.json","eyJmb28iOiJiYXIifQ==")');
     expect(script).not.toContain("d('widgets/default/nav.json'");
+  });
+});
+
+describe("createBaseUrlScript", () => {
+  it("should add the relative base URL to the document head", () => {
+    const script = createBaseUrlScript();
+
+    expect(script).toContain('baseEl.href = "./"');
+    expect(script).toContain("window.document.head.appendChild(baseEl)");
   });
 });
 
