@@ -107,7 +107,17 @@ export type AwesomeTestResult = Omit<
 
 export type AwesomeTreeLeaf = Pick<
   AwesomeTestResult,
-  "duration" | "name" | "start" | "status" | "groupOrder" | "flaky" | "transition" | "retry" | "retriesCount" | "id"
+  | "duration"
+  | "name"
+  | "start"
+  | "stop"
+  | "status"
+  | "groupOrder"
+  | "flaky"
+  | "transition"
+  | "retry"
+  | "retriesCount"
+  | "id"
 > & {
   nodeId: string;
   transitionTooltip?: string;

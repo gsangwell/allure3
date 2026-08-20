@@ -12,6 +12,9 @@ import styles from "./styles.scss";
 
 export interface TreeItemInfoProps {
   duration?: number;
+  start?: number;
+  stop?: number;
+  formatTimestamp?: (timestamp: number) => string;
   retriesCount?: number;
   flaky?: boolean;
   transition?: TestStatusTransition;
@@ -21,12 +24,17 @@ export interface TreeItemInfoProps {
 
 export const TreeItemInfo: FunctionComponent<TreeItemInfoProps> = ({
   duration,
+  start,
+  stop,
+  formatTimestamp,
   retriesCount,
   flaky,
   transition,
   tooltips,
 }) => {
   const formattedDuration = formatDuration(duration);
+  const timestamp = stop ?? start;
+  const time = typeof timestamp === "number" && formatTimestamp ? formatTimestamp(timestamp) : formattedDuration;
 
   return (
     <div className={styles["item-info"]}>
@@ -50,7 +58,7 @@ export const TreeItemInfo: FunctionComponent<TreeItemInfoProps> = ({
         </TooltipWrapper>
       )}
       <Text data-testid="tree-leaf-duration" type="ui" size={"m"} className={styles["item-info-time"]}>
-        {formattedDuration}
+        {time}
       </Text>
     </div>
   );

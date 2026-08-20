@@ -12,6 +12,9 @@ interface TreeItemProps {
   name: string;
   status?: TestStatus;
   duration?: number;
+  start?: number;
+  stop?: number;
+  formatTimestamp?: (timestamp: number) => string;
   retriesCount?: number;
   flaky?: boolean;
   transition?: TestStatusTransition;
@@ -31,6 +34,9 @@ export const TreeItem: FunctionComponent<TreeItemProps> = ({
   groupOrder,
   status,
   duration,
+  start,
+  stop,
+  formatTimestamp,
   retriesCount,
   flaky,
   transition,
@@ -68,6 +74,9 @@ export const TreeItem: FunctionComponent<TreeItemProps> = ({
       <TreeItemInfo
         data-testid="tree-leaf-info"
         duration={duration}
+        start={start}
+        stop={stop}
+        formatTimestamp={formatTimestamp}
         flaky={flaky}
         retriesCount={retriesCount}
         transition={transition}

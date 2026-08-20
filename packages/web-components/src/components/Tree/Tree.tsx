@@ -29,6 +29,7 @@ interface TreeProps {
   name?: string;
   root?: boolean;
   statusFilter?: Status;
+  formatLeafTimestamp?: (timestamp: number) => string;
   collapsedTrees: Set<string>;
   toggleTree: (id: string, openedByDefault?: boolean) => void;
   navigateTo: (id: string) => void;
@@ -61,6 +62,7 @@ const subtreeToggleIconByState = {
 export const Tree: FunctionalComponent<TreeProps> = ({
   tree,
   statusFilter,
+  formatLeafTimestamp,
   root,
   name,
   statistic,
@@ -156,6 +158,7 @@ export const Tree: FunctionalComponent<TreeProps> = ({
       statistic={subTree.statistic}
       reportStatistic={reportStatistic}
       statusFilter={statusFilter}
+      formatLeafTimestamp={formatLeafTimestamp}
       collapsedTrees={collapsedTrees}
       toggleTree={toggleTree}
       routeId={routeId}
@@ -175,6 +178,9 @@ export const Tree: FunctionalComponent<TreeProps> = ({
       status={leaf.status}
       groupOrder={leaf.groupOrder as number}
       duration={leaf.duration}
+      start={leaf.start}
+      stop={leaf.stop}
+      formatTimestamp={formatLeafTimestamp}
       retriesCount={leaf.retriesCount}
       transition={leaf.transition}
       transitionTooltip={leaf.transitionTooltip}

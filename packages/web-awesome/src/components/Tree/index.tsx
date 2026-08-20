@@ -21,6 +21,7 @@ import {
 } from "@/stores/tree";
 import { clearTreeFilters, treeStatus } from "@/stores/treeFilters/store";
 import { createTreeLocalizer } from "@/utils/tree";
+import { timestampToDate } from "@/utils/time";
 
 import * as styles from "./styles.scss";
 
@@ -33,6 +34,7 @@ const treeNavigateTo = (testResultId: string) => {
 
 export const TreeList = () => {
   const { t } = useI18n("empty");
+  const { t: tUi } = useI18n("ui");
   const { t: tEnvironments } = useI18n("environments");
   const { t: tooltip } = useI18n("transitions");
   const trId = currentTrId.value;
@@ -87,6 +89,7 @@ export const TreeList = () => {
     }),
     [tooltip],
   );
+  const formatLeafTimestamp = (timestamp: number) => `${tUi("ranAt")} ${timestampToDate(timestamp)}`;
 
   return (
     <Loadable
@@ -144,6 +147,7 @@ export const TreeList = () => {
                 navigateTo={treeNavigateTo}
                 tree={treeLocalizer(filteredTree.value[soleId])}
                 statusFilter={currentTreeStatus}
+                formatLeafTimestamp={formatLeafTimestamp}
                 routeId={trId}
                 focusedId={focusedId}
                 root
@@ -166,6 +170,7 @@ export const TreeList = () => {
                 navigateTo={treeNavigateTo}
                 tree={treeLocalizer(currentTree)}
                 statusFilter={currentTreeStatus}
+                formatLeafTimestamp={formatLeafTimestamp}
                 routeId={trId}
                 focusedId={focusedId}
                 root
@@ -225,6 +230,7 @@ export const TreeList = () => {
                         toggleTree={toggleTree}
                         isGroupOpened={isTreeOpened}
                         statusFilter={currentTreeStatus}
+                        formatLeafTimestamp={formatLeafTimestamp}
                         navigateTo={treeNavigateTo}
                         tree={treeLocalizer(value)}
                         routeId={trId}

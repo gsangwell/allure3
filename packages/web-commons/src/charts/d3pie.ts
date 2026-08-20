@@ -59,7 +59,9 @@ export const getPieChartValues = (stats: Statistic): PieChartValues => {
       };
     })
     .filter((item) => item !== null);
-  const percentage = getPercentage(stats.passed ?? 0, stats.total);
+  const checksIncludedInSuccessRate = stats.total - (stats.skipped ?? 0);
+  const percentage =
+    checksIncludedInSuccessRate > 0 ? getPercentage(stats.passed ?? 0, checksIncludedInSuccessRate) : 0;
 
   return {
     slices,
